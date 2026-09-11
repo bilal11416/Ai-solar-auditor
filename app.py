@@ -8,7 +8,7 @@ st.set_page_config(page_title="AI Solar Auditor", page_icon="⚡", layout="wide"
 st.title("⚡ AI Solar Auditor (Multi-Agent Simulation)")
 st.write("Enter your PESCO/DESCO Bill data to instantly get an AI-powered Solar Sizing & Financial ROI Report.")
 
-# Sidebar for API Key & Mock Selection
+# Sidebar for API Key
 with st.sidebar:
     st.header("⚙️ Configuration")
     groq_api_key = st.text_input("Enter Groq API Key:", type="password")
@@ -19,7 +19,7 @@ with st.sidebar:
 if not groq_api_key:
     st.warning("⚠️ Please enter your Groq API Key in the sidebar to run the auditor.")
 else:
-    # Initialize Groq
+    # Initialize Groq Client safely
     client = Groq(api_key=groq_api_key)
     
     # Form Input for User
@@ -58,22 +58,28 @@ else:
                 Keep the output technical, clear, and structured with clear markdown bullet points. Do not include any extra introductory chat.
                 """
                 
+                # Request generation
                 response = client.chat.completions.create(
                     model="openai/gpt-oss-20b",
                     messages=[{"role": "user", "content": engineer_prompt}],
                     temperature=0.2
                 )
                 
-                # Render output directly onto Web Dashboard
                 st.success("✅ Audit Report Generated Successfully!")
                 st.markdown("### 📊 Final Audit Report")
                 
-                # Parsing structure safely
-                output_text = response.choices if hasattr(response, 'choices') else response
-                if isinstance(output_text, list) and len(output_text) > 0:
-                    st.markdown(output_text[0].message.content)
+                # --- UNIVERSAL PARSING FIX ---
+                # This guarantees content prints regardless of response type structure
+                if hasattr(response, 'choices') and len(response.choices) > 0:
+                    choice = response.choices[0]
+                    if hasattr(choice, 'message') and hasattr(choice.message, 'content'):
+                        st.markdown(choice.message.content)
+                    elif isinstance(choice, dict) and 'message' in choice:
+                        st.markdown(choice['message'].get('content', ''))
+                elif hasattr(response, 'content'):
+                    st.markdown(response.content)
                 else:
-                    st.markdown(response)
+                    st.write(str(response))
                     
             except Exception as e:
                 st.error(f"Execution Error: {e}")
