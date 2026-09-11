@@ -6,7 +6,7 @@ from groq import Groq
 st.set_page_config(page_title="AI Solar Auditor", page_icon="⚡", layout="wide")
 
 st.title("☀ AI Solar Auditor (Public Version)")
-st.write("Apne ghar ya shop ke bill ka data enter karein aur instant Solar Sizing & ROI Report haasil karein.")
+st.write("Enter your residential or commercial electricity bill parameters to instantly generate a custom Solar Sizing & Financial ROI Report.")
 
 # --- SECURE API KEY FETCH ---
 if "GROQ_API_KEY" in st.secrets:
