@@ -5,7 +5,7 @@ from groq import Groq
 # Streamlit Page Setup
 st.set_page_config(page_title="AI Solar Auditor", page_icon="⚡", layout="wide")
 
-st.title("⚡ AI Solar Auditor (Public Version)")
+st.title("☀ AI Solar Auditor (Public Version)")
 st.write("Apne ghar ya shop ke bill ka data enter karein aur instant Solar Sizing & ROI Report haasil karein.")
 
 # --- SECURE API KEY FETCH ---
