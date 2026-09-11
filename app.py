@@ -9,7 +9,6 @@ st.title("⚡ AI Solar Auditor (Public Version)")
 st.write("Apne ghar ya shop ke bill ka data enter karein aur instant Solar Sizing & ROI Report haasil karein.")
 
 # --- SECURE API KEY FETCH ---
-# This looks for the hidden key in Streamlit Cloud Dashboard settings
 if "GROQ_API_KEY" in st.secrets:
     HIDDEN_GROQ_KEY = st.secrets["GROQ_API_KEY"]
 elif os.environ.get("GROQ_API_KEY"):
@@ -76,23 +75,10 @@ if st.button("🚀 Run AI Solar Audit"):
                 st.success("✅ Audit Report Generated Successfully!")
                 st.markdown("### 📊 Final Audit Report")
                 
-                # --- ULTIMATE SAFE PRINT PARSER ---
-                try:
-                    # Agar standard structure format hai
-                    if hasattr(response, 'choices') and len(response.choices) > 0:
-                        choice = response.choices[0]
-                        if hasattr(choice, 'message') and hasattr(choice.message, 'content'):
-                            st.markdown(choice.message.content)
-                        elif isinstance(choice, dict) and 'message' in choice:
-                            st.markdown(choice['message'].get('content', ''))
-                    # Fallback agar text format direct ho
-                    elif hasattr(response, 'content'):
-                        st.markdown(response.content)
-                    else:
-                        st.write(str(response.choices[0].message.content))
-                except Exception as parse_error:
-                    # Final crash-proof fallback
-                    try:
-                        st.write(str(response.choices[0].message.content))
-                    except:
-                        st.write(str(response))
+                # Direct Safe Print String Extractor
+                report_content = response.choices[0].message.content
+                st.markdown(report_content)
+                    
+            except Exception as e:
+                st.error(f"Execution Error: {e}")
+
