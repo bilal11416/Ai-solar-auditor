@@ -76,12 +76,23 @@ if st.button("🚀 Run AI Solar Audit"):
                 st.success("✅ Audit Report Generated Successfully!")
                 st.markdown("### 📊 Final Audit Report")
                 
-                if hasattr(response, 'choices') and len(response.choices) > 0:
-                    choice = response.choices
-                    if hasattr(choice, 'message') and hasattr(choice.message, 'content'):
-                        st.markdown(choice.message.content)
-                else:
-                    st.write(str(response))
-                    
-            except Exception as e:
-                st.error(f"Execution Error: {e}")
+                # --- ULTIMATE SAFE PRINT PARSER ---
+                try:
+                    # Agar standard structure format hai
+                    if hasattr(response, 'choices') and len(response.choices) > 0:
+                        choice = response.choices[0]
+                        if hasattr(choice, 'message') and hasattr(choice.message, 'content'):
+                            st.markdown(choice.message.content)
+                        elif isinstance(choice, dict) and 'message' in choice:
+                            st.markdown(choice['message'].get('content', ''))
+                    # Fallback agar text format direct ho
+                    elif hasattr(response, 'content'):
+                        st.markdown(response.content)
+                    else:
+                        st.write(str(response.choices[0].message.content))
+                except Exception as parse_error:
+                    # Final crash-proof fallback
+                    try:
+                        st.write(str(response.choices[0].message.content))
+                    except:
+                        st.write(str(response))
