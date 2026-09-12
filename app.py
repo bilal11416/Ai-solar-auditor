@@ -3,9 +3,29 @@ import os
 from groq import Groq
 
 # Streamlit Page Setup
-st.set_page_config(page_title="AI Solar Auditor", page_icon="⚡", layout="wide")
+st.set_page_config(
+    page_title="AI Solar Auditor", 
+    page_icon="☀️", 
+    layout="wide"
+)
 
-st.title("☀ AI Solar Auditor (Public Version)")
+# Niche se streamlit ka text hatane aur 'AI Solar Auditor' likhne ke liye CSS
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            footer:after {
+                content:'AI Solar Auditor'; 
+                visibility: visible;
+                display: block;
+                position: relative;
+                top: 2px;
+            }
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+st.title("☀️ AI Solar Auditor (Public Version)")
 st.write("Enter your residential or commercial electricity bill parameters to instantly generate a custom Solar Sizing & Financial ROI Report.")
 
 # --- SECURE API KEY FETCH ---
