@@ -102,7 +102,7 @@ if st.button("🚀 Run AI Solar Audit"):
                 """
                 
                 completion = client.chat.completions.create(
-                    model="llama3.3-70b-versatile",
+                    model="openai/gpt-oss-20b",
                     messages=[{"role": "user", "content": engineer_prompt}],
                     temperature=0.3,
                     max_tokens=1500
