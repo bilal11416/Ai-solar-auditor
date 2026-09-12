@@ -121,7 +121,7 @@ if st.button("🚀 Run AI Solar Audit"):
                     max_tokens=800
                 )
                 
-                ai_report_text = completion.choices.message.content
+                ai_report_text = completion.choices[0].message.content
                 
                 # Show AI Report on UI
                 st.subheader("📋 Detailed AI Audit Report")
