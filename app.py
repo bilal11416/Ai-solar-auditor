@@ -115,10 +115,10 @@ if st.button("🚀 Run AI Solar Audit"):
                 """
                 
                 completion = client.chat.completions.create(
-                    model="qwen/qwen3.6-27b",
+                    model="llama-3.1-8b",
                     messages=[{"role": "user", "content": engineer_prompt}],
                     temperature=0.3,
-                    max_tokens=1500
+                    max_tokens=800
                 )
                 
                 ai_report_text = completion.choices.message.content
